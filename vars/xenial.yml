@@ -4,7 +4,8 @@
 
 # Packages
 _php_fpm_packages:
-  - 'php-fpm'
+  - name: 'php-fpm'
+    state: 'present'
 
 # Binaries names
 _php_fpm_binary_name: 'php-fpm7.0'

@@ -1,0 +1,25 @@
+---
+
+# Ubuntu Bionic vars
+
+# Packages
+_php_fpm_packages:
+  - name: 'php-fpm'
+    state: 'present'
+
+# Binaries names
+_php_fpm_binary_name: 'php-fpm7.2'
+_php_fpm_service_name: 'php7.2-fpm'
+
+# Directories Paths
+_php_fpm_config_base_path: '/etc/php/7.2'
+_php_fpm_log_base_path: '/var/log'
+_php_fpm_run_base_path: '/var/run'
+_php_fpm_systemd_base_path: '/lib/systemd/system/'
+
+# Files paths
+_php_fpm_binary_check_config_file_path: '/usr/lib/php/php7.0-fpm-checkconf'
+_php_fpm_binary_file_path: '/usr/sbin/php-fpm7.2'
+_php_fpm_init_file_path: '/etc/init.d/php7.2-fpm'
+_php_fpm_pid_file_path: "{{ _php_fpm_run_base_path }}/php7.2-fpm.pid"
+_php_fpm_error_log_file_path: "{{ _php_fpm_log_base_path }}/php7.2-fpm.log"

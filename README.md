@@ -1,45 +1,46 @@
 # php-fpm
 
-[![Build Status](https://travis-ci.org/infOpen/ansible-role-php-fpm.svg?branch=master)](https://travis-ci.org/infOpen/ansible-role-php-fpm)
+[![Build Status](https://travis-ci.org/infOpen/ansible-role-php-fpm.svg?branch=master)](https://travis-ci.org/Temelio/ansible-role-php-fpm)
+[![License](https://img.shields.io/badge/license-MIT%20License-brightgreen.svg)](https://opensource.org/licenses/MIT)
+[![Updates](https://pyup.io/repos/github/Temelio/ansible-role-php-fpm/shield.svg)](https://pyup.io/repos/github/Temelio/ansible-role-php-fpm/)
+[![Python 3](https://pyup.io/repos/github/Temelio/ansible-role-php-fpm/python-3-shield.svg)](https://pyup.io/repos/github/Temelio/ansible-role-php-fpm/)
+[![Ansible Role](https://img.shields.io/ansible/role/12562.svg)](https://galaxy.ansible.com/Temelio/php-fpm/)
+[![GitHub tag](https://img.shields.io/github/tag/temelio/ansible-role-php-fpm.svg)](https://github.com/cloudalchemy/ansible-role-php-fpm/tags)
 
 Install php-fpm package.
 
 ## Requirements
 
-This role requires Ansible 2.0 or higher,
+This role requires Ansible 2.4 or higher,
 and platform requirements are listed in the metadata file.
 
 ## Testing
 
-This role has some testing methods.
+This role use [Molecule](https://github.com/metacloud/molecule/) to run tests.
 
-To use locally testing methods, you need to install Docker and/or Vagrant and Python requirements:
+Locally, you can run tests on Docker (default driver) or Vagrant.
+Travis run tests using Docker driver only.
 
-* Create and activate a virtualenv
-* Install requirements
+Currently, tests are done on:
+- Ubuntu Xenial
+- Ubuntu Bionic
 
-```
-pip install -r requirements_dev.txt
-```
+and use:
+- Ansible 2.4.x
+- Ansible 2.5.x
+- Ansible 2.6.x
+- Ansible 2.7.x
 
-### Automatically with Travis
+### Running tests
+
+#### Automatically with Travis
 
 Tests runs automatically on Travis on push, release, pr, ... using docker testing containers
 
-### Locally with Docker
-
-You can use Docker to run tests on ephemeral containers.
+#### Using Docker driver
 
 ```
-make test-docker
-```
-
-### Locally with Vagrant
-
-You can use Vagrant to run tests on virtual machines.
-
-```
-make test-vagrant
+$ tox
 ```
 
 ## Role Variables
@@ -51,7 +52,6 @@ make test-vagrant
 php_fpm_apt_update_cache: True
 php_fpm_apt_cache_valid_time: 3600
 php_fpm_packages: "{{ _php_fpm_packages }}"
-php_fpm_packages_state: 'present'
 
 # Binaries
 php_fpm_binary_name: "{{ _php_fpm_binary_name }}"
@@ -201,7 +201,7 @@ None
 
     - hosts: servers
       roles:
-         - { role: infOpen.php-fpm }
+         - { role: Temelio.php-fpm }
 
 ## License
 
@@ -209,7 +209,5 @@ MIT
 
 ## Author Information
 
-Alexandre Chaussier (for Infopen company)
-- http://www.infopen.pro
-- a.chaussier [at] infopen.pro
-
+L Machetel (for Temelio company)
+Fork from: Alexandre Chaussier (for Infopen company)

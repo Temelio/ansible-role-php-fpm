@@ -1,22 +1,6 @@
 ---
 
-- name: 'Manage main php-fpm configuration file (Before 2.2)'
-  become: True
-  ini_file:
-    dest: "{{ php_fpm_config_base_path }}/{{ php_fpm_instance.name }}/php-fpm.conf"
-    owner: "{{ php_fpm_config_owner }}"
-    group: "{{ php_fpm_config_group }}"
-    mode: "{{ php_fpm_config_files_mode }}"
-    section: "{{ item.section }}"
-    option: "{{ item.option }}"
-    value: "{{ item.value }}"
-    state: "{{ item.state | default('present') }}"
-  notify: 'Restart php-fpm instance'
-  with_items: "{{ php_fpm_instance.fpm_config | default([]) }}"
-  when: "{{ ansible_version.full | version_compare('2.2', '<') }}"
-
-
-- name: 'Manage main php-fpm configuration file (From 2.2)'
+- name: 'Manage main php-fpm configuration file'
   become: True
   ini_file:
     dest: "{{ php_fpm_config_base_path }}/{{ php_fpm_instance.name }}/php-fpm.conf"
@@ -30,7 +14,6 @@
     create: True
   notify: 'Restart php-fpm instance'
   with_items: "{{ php_fpm_instance.fpm_config | default([]) }}"
-  when: "{{ ansible_version.full | version_compare('2.2', '>=') }}"
 
 
 - name: 'Manage php.ini configuration file'
@@ -46,7 +29,7 @@
     state: "{{ item.state | default('present') }}"
   notify: 'Restart php-fpm instance'
   with_items: "{{ php_fpm_instance.php_config | default([]) }}"
-  when: "{{ not php_fpm_shared_php_enabled }}"
+  when: not php_fpm_shared_php_enabled
 
 
 - name: 'Enable php modules'
@@ -59,7 +42,7 @@
     group: "{{ php_fpm_config_group }}"
   notify: 'Restart php-fpm instance'
   with_items: "{{ php_fpm_instance.php_modules | default([]) }}"
-  when: "{{ not php_fpm_shared_php_enabled }}"
+  when: not php_fpm_shared_php_enabled
 
 
 - name: 'Manage instance pool configuration files'
@@ -74,40 +57,13 @@
   with_items: "{{ php_fpm_instance.fpm_pools | default([]) }}"
 
 
-- name: 'Find all existing pools'
-  become: True
-  shell: >
-    find {{ php_fpm_config_base_path }}/{{ php_fpm_instance.name }}/pool.d/ \
-     -name "*.conf" \
-     {% for fpm_pool in php_fpm_instance.fpm_pools %} ! -name "{{ fpm_pool.name }}.conf" {% endfor %} \
-     -type f \
-     -exec basename \{} .conf \;
-  register: 'php_fpm_pool_files'
-  changed_when: False
-  when:
-    - "{{ php_fpm_instance.name is defined }}"
-    - "{{ php_fpm_instance.name != '' }}"
-
-
-- name: 'Remove not managed pool files'
-  become: True
-  file:
-    path: "{{ php_fpm_config_base_path }}/{{ php_fpm_instance.name }}/pool.d/{{ item }}.conf"
-    state: 'absent'
-  notify: 'Restart php-fpm instance'
-  with_items: "{{ php_fpm_pool_files.stdout_lines | default([]) }}"
-
-
 - name: 'Check php-fpm instance syntax of configuration files'
   become: True
-  shell: "{{ php_fpm_binary_name }} -t -c {{ php_fpm_config_base_path }}/{{ php_fpm_instance.name }}/php-fpm.conf"
+  command: "{{ php_fpm_binary_name }} -t -c {{ php_fpm_config_base_path }}/{{ php_fpm_instance.name }}/php-fpm.conf"
   register: 'php_fpm_check_config'
-  failed_when: "{{ php_fpm_check_config.rc != 0 }}"
-  changed_when: "{{ php_fpm_check_config.rc != 0 }}"
-  when:
-    - "{{ php_fpm_instance.service_name is defined }}"
-    - "{{ php_fpm_instance.service_name != '' }}"
-
+  failed_when: php_fpm_check_config.rc != 0
+  changed_when: php_fpm_check_config.rc != 0
+  when: php_fpm_instance.service_name is defined
 
 - name: 'Manage instance service'
   become: True
@@ -115,9 +71,7 @@
     name: "{{ php_fpm_instance.service_name }}"
     enabled: "{{ php_fpm_instance.service_enabled | default(True) }}"
     state: "{{ php_fpm_instance.service_state | default('started') }}"
-  when:
-    - "{{ php_fpm_instance.service_name is defined }}"
-    - "{{ php_fpm_instance.service_name != '' }}"
+  when: php_fpm_instance.service_name is defined
 
 
 - name: 'Manage logrotate configuration file'
@@ -129,6 +83,5 @@
     group: "{{ php_fpm_config_group }}"
     mode: '0644'
   when:
-    - "{{ php_fpm_manage_logrotate_config }}"
-    - "{{ php_fpm_instance.service_name is defined }}"
-    - "{{ php_fpm_instance.service_name != '' }}"
+    - php_fpm_manage_logrotate_config
+    - php_fpm_instance.service_name is defined
