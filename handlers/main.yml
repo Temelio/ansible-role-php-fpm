@@ -8,9 +8,9 @@
     name: "{{ php_fpm_instance.service_name }}"
     state: 'restarted'
   when:
-    - "{{ php_fpm_instance.service_name is defined }}"
-    - "{{ (php_fpm_instance.state | default('started')) == 'started' }}"
-    - "{{ php_fpm_instance.enabled | default(True) }}"
+    - php_fpm_instance.service_name is defined
+    - (php_fpm_instance.state | default('started')) == 'started'
+    - php_fpm_instance.enabled | default(True)
   tags:
     - 'php-fpm::role'
     - 'php-fpm::config'

@@ -31,16 +31,17 @@
       dest: "php.ini"
     - src: "{{ php_fpm_shared_php_master_confd }}"
       dest: "conf.d"
-  when: "{{ php_fpm_shared_php_enabled }}"
+  when: php_fpm_shared_php_enabled
 
 
 - name: 'Copy php.ini master file to instance'
   become: True
-  shell: "cp {{ php_fpm_shared_php_master_file }} {{ php_fpm_config_base_path }}/{{ php_fpm_instance.name }}/php.ini"
-  args:
-    creates: "{{ php_fpm_config_base_path }}/{{ php_fpm_instance.name }}/php.ini"
+  copy:
+    src: "{{ php_fpm_shared_php_master_file }}"
+    dest: "{{ php_fpm_config_base_path }}/{{ php_fpm_instance.name }}/php.ini"
+    mode: '0644'
   notify: 'Restart php-fpm instance'
-  when: "{{ not php_fpm_shared_php_enabled }}"
+  when: not php_fpm_shared_php_enabled
 
 
 - name: 'Manage php modules instance directory'
@@ -52,7 +53,7 @@
     mode: "{{ php_fpm_config_directories_mode }}"
     state: 'directory'
   notify: 'Restart php-fpm instance'
-  when: "{{ not php_fpm_shared_php_enabled }}"
+  when: not php_fpm_shared_php_enabled
 
 
 - name: 'Create instance init files'
@@ -75,7 +76,7 @@
     group: "{{ php_fpm_config_group }}"
     mode: "{{ php_fpm_init_files_mode }}"
   register: 'php_fpm_systemd_file_content'
-  when: "{{ php_fpm_systemd_base_path != '' }}"
+  when: php_fpm_systemd_base_path is defined
 
 
 - name: 'Create systemd links'
@@ -86,11 +87,12 @@
     owner: "{{ php_fpm_config_owner }}"
     group: "{{ php_fpm_config_group }}"
     state: 'link'
-  when: "{{ php_fpm_systemd_file_content | changed }}"
+  when: php_fpm_systemd_file_content | changed
 
 
 - name: 'Reload systemd units'
   become: True
-  command: 'systemctl daemon-reload'
+  systemd:
+    daemon_reload: true
   notify: 'Restart php-fpm instance'
-  when: "{{ php_fpm_systemd_file_content | changed }}"
+  when: php_fpm_systemd_file_content | changed

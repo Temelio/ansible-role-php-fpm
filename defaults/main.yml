@@ -6,7 +6,6 @@
 php_fpm_apt_update_cache: True
 php_fpm_apt_cache_valid_time: 3600
 php_fpm_packages: "{{ _php_fpm_packages }}"
-php_fpm_packages_state: 'present'
 
 # Binaries
 php_fpm_binary_name: "{{ _php_fpm_binary_name }}"

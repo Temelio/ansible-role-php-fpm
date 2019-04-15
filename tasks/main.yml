@@ -11,17 +11,17 @@
 
 
 - name: 'Include install tasks'
-  include: "{{ role_path }}/tasks/install.yml"
+  include_tasks: "{{ role_path }}/tasks/install.yml"
   tags:
     - 'php-fpm::role'
     - 'php-fpm::install'
 
 
 - name: 'Manage custom instances'
-  include: "{{ role_path }}/tasks/manage_custom_instances.yml"
+  include_tasks: "{{ role_path }}/tasks/manage_custom_instances.yml"
   when:
-    - "{{ php_fpm_instance.name is defined }}"
-    - "{{ php_fpm_instance.name != 'fpm' }}"
+    - php_fpm_instance.name is defined
+    - php_fpm_instance.name != 'fpm'
   tags:
     - 'php-fpm::role'
     - 'php-fpm::install'
@@ -29,7 +29,7 @@
 
 
 - name: 'Include configuration tasks'
-  include: "{{ role_path }}/tasks/config.yml"
+  include_tasks: "{{ role_path }}/tasks/config.yml"
   tags:
     - 'php-fpm::role'
     - 'php-fpm::config'

@@ -3,10 +3,10 @@
 - name: 'Install packages'
   become: True
   apt:
-    name: "{{ item }}"
+    name: "{{ item.name }}"
     update_cache: "{{ php_fpm_apt_update_cache }}"
     cache_valid_time: "{{ php_fpm_apt_cache_valid_time }}"
-    state: "{{ php_fpm_packages_state }}"
+    state: "{{ item.state }}"
   notify: 'Restart php-fpm instance'
   register: 'php_fpm_check_package_installed'
   with_items: "{{ php_fpm_packages }}"
@@ -18,5 +18,12 @@
     name: "{{ _php_fpm_service_name }}"
     state: 'stopped'
     enabled: False
-  when:
-    - "{{ php_fpm_disable_default_service }}"
+  when: php_fpm_disable_default_service
+
+- name: 'Ensure php-fpm directories exists'
+  file:
+    path: "{{ php_fpm_config_base_path }}/{{ php_fpm_instance.name }}/pool.d"
+    state: 'directory'
+    owner: 'www-data'
+    group: 'www-data'
+    mode: '0750'
