@@ -1,11 +1,12 @@
 # php-fpm
 
-[![Build Status](https://travis-ci.org/infOpen/ansible-role-php-fpm.svg?branch=master)](https://travis-ci.org/Temelio/ansible-role-php-fpm)
 [![License](https://img.shields.io/badge/license-MIT%20License-brightgreen.svg)](https://opensource.org/licenses/MIT)
+[![Build Status](https://img.shields.io/travis/Temelio/ansible-role-php-fpm/master.svg?label=travis_master)](https://travis-ci.org/Temelio/ansible-role-php-fpm)
+[![Build Status](https://img.shields.io/travis/Temelio/ansible-role-php-fpm/develop.svg?label=travis_develop)](https://travis-ci.org/Temelio/ansible-role-php-fpm)
 [![Updates](https://pyup.io/repos/github/Temelio/ansible-role-php-fpm/shield.svg)](https://pyup.io/repos/github/Temelio/ansible-role-php-fpm/)
 [![Python 3](https://pyup.io/repos/github/Temelio/ansible-role-php-fpm/python-3-shield.svg)](https://pyup.io/repos/github/Temelio/ansible-role-php-fpm/)
 [![Ansible Role](https://img.shields.io/ansible/role/12562.svg)](https://galaxy.ansible.com/Temelio/php-fpm/)
-[![GitHub tag](https://img.shields.io/github/tag/temelio/ansible-role-php-fpm.svg)](https://github.com/cloudalchemy/ansible-role-php-fpm/tags)
+[![GitHub tag](https://img.shields.io/github/tag/Temelio/ansible-role-php-fpm.svg)](https://github.com/Temelio/ansible-role-php-fpm/tags)
 
 Install php-fpm package.
 

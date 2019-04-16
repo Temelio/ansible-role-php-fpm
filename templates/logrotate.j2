@@ -1,4 +1,4 @@
-# {{ ansible_managed }}
+{{ ansible_managed | comment }}
 
 {{ php_fpm_logrotate_config.log_pattern }} {
 {% for option in php_fpm_logrotate_config.options %}
