@@ -1,6 +1,7 @@
 ---
 
 galaxy_info:
+  role_name: 'php-fpm'
   author: 'A Chaussier, L Machetel'
   description: 'Ansible role to manage PHP-FPM installation and configuration'
   company: 'Temelio (https://www.temelio.com)'

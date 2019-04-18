@@ -1,7 +1,6 @@
 docker==3.7.2
 molecule==2.20.1
 paramiko==2.4.2
-pytest==4.4.0
-six==1.11.0
-testinfra==1.19.0
-tox==3.8.6
+pytest==4.4.1
+testinfra==2.1.0
+tox==3.9.0

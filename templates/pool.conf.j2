@@ -4,7 +4,7 @@
 
 {% for key_lv1, value_lv1 in ((php_fpm_pool_defaults | default(dict())).items() + item.items()) if key_lv1 != 'name' %}
 {% if value_lv1 is mapping -%}
-{% for key_lv2, value_lv2 in value_lv1.iteritems() %}
+{% for key_lv2, value_lv2 in value_lv1 | dict2items %}
 {{ key_lv1 }}[{{ key_lv2 }}] = {{ value_lv2 }}
 {% endfor %}
 {% elif (value_lv1 is iterable) and (value_lv1 is not string) %}
