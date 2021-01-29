@@ -1,5 +1,5 @@
 docker==3.7.2
-molecule==2.20.1
+molecule==3.2.3
 paramiko==2.4.2
 pytest==4.4.1
 testinfra==2.1.0
